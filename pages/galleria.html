@@ -293,6 +293,13 @@
             return { width: 1, height: 1, ratio: 1 };
         }
         
+        // Funzione per codificare correttamente i percorsi delle immagini
+        function encodeImagePath(path) {
+            return path.split('/').map(part => 
+                part === '..' ? part : encodeURIComponent(part)
+            ).join('/');
+        }
+        
         // Opere d'arte
         const artworks = [
             {
@@ -552,7 +559,7 @@
                 aspectRatio: calculateAspectRatio('110x75 cm')
             },
             {
-                image: '../assets/opere in galleria/Así es .webp',
+                image: '../assets/opere in galleria/Así es .webp',
                 title: 'Así es',
                 medium: 'Tecnica mista su tela',
                 year: '2018',
@@ -584,7 +591,7 @@
                 aspectRatio: calculateAspectRatio('80x40 cm')
             },
             {
-                image: '../assets/opere in galleria/Él.webp',
+                image: '../assets/opere in galleria/Él.webp',
                 title: 'Él',
                 medium: 'Tecnica mista su tela',
                 year: '2018',
@@ -672,7 +679,7 @@
                 aspectRatio: { width: 1, height: 1, ratio: 1 }
             },
             {
-                image: '../assets/opere in galleria/Permitírselo.webp',
+                image: '../assets/opere in galleria/Permitírselo.webp',
                 title: 'Permitírselo',
                 medium: 'Acrilico su tela',
                 year: '2021',
@@ -712,7 +719,7 @@
                 aspectRatio: calculateAspectRatio('80x40 cm')
             },
             {
-                image: '../assets/opere in galleria/en la tierra infértil  copia.jpeg',
+                image: '../assets/opere in galleria/en la tierra infértil  copia.jpeg',
                 title: 'En la tierra infértil',
                 medium: 'Tecnica mista su tela',
                 year: '2025',
@@ -798,7 +805,7 @@
                         return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
+                                    <img src="${encodeImagePath(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -827,7 +834,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
+                                    <img src="${encodeImagePath(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -849,7 +856,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
+                                    <img src="${encodeImagePath(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -871,7 +878,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
+                                    <img src="${encodeImagePath(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>

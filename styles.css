@@ -838,6 +838,9 @@ body {
     
     .gallery-card {
         margin-bottom: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
     }
     
     .gallery-card-image {
@@ -846,14 +849,21 @@ body {
     
     .gallery-card-content {
         padding: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
     
     .gallery-card-content h3 {
         font-size: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .gallery-card-content p {
         font-size: 14px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .curtain-toggle {
@@ -863,16 +873,32 @@ body {
         justify-content: space-between;
     }
     
+    .curtain-container {
+        overflow-x: hidden;
+        margin-left: -20px;
+        margin-right: -20px;
+        width: calc(100% + 40px);
+    }
+    
     .curtain-content {
         padding: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
     
     .exhibitions-list {
         gap: 15px;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .exhibition-item {
         padding: 15px;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .exhibition-item h4 {
@@ -881,6 +907,14 @@ body {
     
     .exhibition-item p {
         font-size: 14px;
+    }
+    
+    .exhibition-year,
+    .exhibition-title,
+    .exhibition-location {
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .section-title {
