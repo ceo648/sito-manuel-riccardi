@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Immagini</title>
+    <style>
+        body { padding: 20px; font-family: Arial; }
+        img { max-width: 300px; margin: 10px; border: 2px solid red; display: block; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test Caricamento Immagini</h1>
+    <p>Verifica quali immagini si caricano:</p>
+    
+    <h2>1. Hero Image</h2>
+    <img src="assets/hero-image.jpg.jpeg" alt="Hero" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso: assets/hero-image.jpg.jpeg</p>
+    
+    <h2>2. Manuel Riccardi</h2>
+    <img src="assets/manuel-riccardi.jpg" alt="Manuel" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso: assets/manuel-riccardi.jpg</p>
+    
+    <h2>3. Homepage 1</h2>
+    <img src="assets/Altre immagini homepage.jpeg" alt="Homepage 1" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso: assets/Altre immagini homepage.jpeg</p>
+    
+    <h2>4. Homepage 2</h2>
+    <img src="assets/Altre immagini homepage copy.jpeg" alt="Homepage 2" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso: assets/Altre immagini homepage copy.jpeg</p>
+    
+    <h2>5. Opera 1 (URL encoded)</h2>
+    <img src="assets/Opere%20Galleria%20Pubblica%20(sezione%20%22Opere%20in%20Evidenza%22)%201.webp" alt="Opera 1" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso URL encoded: assets/Opere%20Galleria%20Pubblica%20(sezione%20%22Opere%20in%20Evidenza%22)%201.webp</p>
+    
+    <h2>6. Opera 1 (senza encoding)</h2>
+    <img src="assets/Opere Galleria Pubblica (sezione &quot;Opere in Evidenza&quot;) 1.webp" alt="Opera 1" onload="this.nextElementSibling.textContent='✓ Caricata'; this.nextElementSibling.className='success'" onerror="this.nextElementSibling.textContent='✗ ERRORE'; this.nextElementSibling.className='error'">
+    <span></span>
+    <p>Percorso senza encoding: assets/Opere Galleria Pubblica (sezione "Opere in Evidenza") 1.webp</p>
+    
+    <script>
+        // Lista tutti i file nella cartella assets
+        fetch('assets/')
+            .then(r => r.text())
+            .then(html => {
+                console.log('Contenuto cartella assets:', html);
+            })
+            .catch(e => console.error('Errore accesso cartella:', e));
+    </script>
+</body>
+</html>
+

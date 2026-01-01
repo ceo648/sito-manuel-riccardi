@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel Riccardi - Artista Contemporaneo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Manuel Riccardi</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#biografia" class="nav-link">Biografia</a></li>
+                <li><a href="#opere" class="nav-link">Opere</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="pages/abusive-mushroom.html" class="nav-link">Abusive Mushroom</a></li>
+                <li><a href="#contatti" class="nav-link">Contatti</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-image-container">
+            <img src="assets/hero-image.jpg.jpeg" alt="Manuel Riccardi nel suo studio con le sue opere" class="hero-image" id="heroImage">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Manuel Riccardi</h1>
+            <p class="hero-subtitle">Artista Contemporaneo</p>
+            <p class="hero-location">Sitges, Barcellona, Spagna</p>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Biography Section -->
+    <section id="biografia" class="biography">
+        <div class="container">
+            <div class="biography-content">
+                <div class="biography-image-container" data-aos="fade-right">
+                    <img src="assets/manuel-riccardi.jpg" alt="Manuel Riccardi" class="biography-image" id="biographyImage">
+                </div>
+                <div class="biography-text" data-aos="fade-left">
+                    <h2 class="section-title">Biografia</h2>
+                    <p class="biography-statement">
+                        Manuel Riccardi è un artista con sede in Spagna i cui dipinti sono stati esposti a livello nazionale, così come in Italia, Francia, Paesi Bassi, Stati Uniti e Svizzera.
+                    </p>
+                    <p class="biography-statement">
+                        Le sue creature, l'uso di colori puri e le forme "deformate armoniosamente" coincidono con una percezione del deformato che lo ha accompagnato in tutte le fasi della sua vita personale. Riccardi traduce le sue esperienze nell'infanzia e nell'adolescenza, oltre ad essere un uomo gay, con audacia, onestà e intensità.
+                    </p>
+                    <div class="biography-location">
+                        <p><strong>Location:</strong> Sitges, Barcellona, Spagna</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two Boxes Section -->
+    <section class="gallery-sections">
+        <div class="gallery-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px;">
+            <!-- Mostre personali -->
+            <div class="gallery-card" data-aos="fade-up">
+                <div class="gallery-card-image">
+                    <img src="assets/Altre immagini homepage.jpeg" alt="Mostre personal" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-card-content">
+                    <h3>Mostre Personali</h3>
+                    <p>Scopri le mostre personali dell'artista</p>
+                    <button id="personalCurtainToggle" class="curtain-toggle">
+                        <span>Mostra / nascondi elenco mostre personali</span>
+                        <span class="curtain-icon">▼</span>
+                    </button>
+                    <div id="personalCurtain" class="curtain-container">
+                        <div class="curtain-left"></div>
+                        <div class="curtain-right"></div>
+                        <div class="curtain-content">
+                            <div id="personalExhibitions" class="exhibitions-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mostre collettive -->
+            <div class="gallery-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="gallery-card-image">
+                    <img src="assets/Altre immagini homepage copy.jpeg" alt="Mostre collettive" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="gallery-card-content">
+                    <h3>Mostre Collettive</h3>
+                    <p>Esplora le mostre collettive</p>
+                    <button id="collectiveCurtainToggle" class="curtain-toggle">
+                        <span>Mostra / nascondi elenco mostre collettive</span>
+                        <span class="curtain-icon">▼</span>
+                    </button>
+                    <div id="collectiveCurtain" class="curtain-container">
+                        <div class="curtain-left"></div>
+                        <div class="curtain-right"></div>
+                        <div class="curtain-content">
+                            <div id="collectiveExhibitions" class="exhibitions-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artworks Section -->
+    <section id="opere" class="featured-artworks">
+        <div class="container">
+            <div class="featured-header">
+                <h2 class="section-title">Opere in Galleria</h2>
+            </div>
+            <div class="artworks-grid">
+                <div class="artwork-featured" data-aos="fade-up">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Opere Galleria Pubblica (sezione &quot;Opere in Evidenza&quot;) 1.webp" alt="Opera d'arte" class="artwork-img">
+                    </div>
+                </div>
+                <div class="artwork-featured" data-aos="fade-up" data-aos-delay="100">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Opere Galleria Pubblica (sezione &quot;Opere in Evidenza&quot;) 2.webp" alt="Opera d'arte" class="artwork-img">
+                    </div>
+                </div>
+                <div class="artwork-featured" data-aos="fade-up" data-aos-delay="200">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Opere Galleria Pubblica (sezione &quot;Opere in Evidenza&quot;) 3.webp" alt="Opera d'arte" class="artwork-img">
+                    </div>
+                </div>
+            </div>
+            <div class="featured-button-container">
+                <a href="pages/galleria.html" class="gallery-button-large">guarda l'intera galleria</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Private Collection Preview Section -->
+    <section class="private-collection-preview">
+        <div class="container">
+            <div class="featured-header">
+                <h2 class="section-title">Collezione Privata</h2>
+            </div>
+            <div class="artworks-grid">
+                <div class="artwork-featured" data-aos="fade-up">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Collezione Privata (sezione &quot;Collezione Privata&quot;) 1.jpeg" alt="Opera collezione privata" class="artwork-img">
+                    </div>
+                </div>
+                <div class="artwork-featured" data-aos="fade-up" data-aos-delay="100">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Collezione Privata (sezione &quot;Collezione Privata&quot;) 2.jpeg" alt="Opera collezione privata" class="artwork-img">
+                    </div>
+                </div>
+                <div class="artwork-featured" data-aos="fade-up" data-aos-delay="200">
+                    <div class="artwork-featured-image">
+                        <img src="assets/Collezione Privata (sezione &quot;Collezione Privata&quot;) 3.jpeg" alt="Opera collezione privata" class="artwork-img">
+                    </div>
+                </div>
+            </div>
+            <div class="featured-button-container">
+                <a href="pages/collezione-privata.html" class="gallery-button-large">guarda l'intera collezione privata</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Domande Frequenti</h2>
+            <div class="faq-container">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Perché sovente si trovano i funghi nelle tue opere?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>I miei disegni includono i funghi sin dall'infanzia e non sono mai stati modificati o migliorati per motivi estetici.</p>
+                        <p>I funghi non appartengono né al regno vegetale né a quello animale; crescono verso l'alto e hanno un cappello che ricorda un mago o persino un preservativo.</p>
+                        <p>I funghi nascono perfetti e maturi da un giorno all'altro, senza seguire un lento processo di crescita... sbucano, emergono, come i Bodhisattva della terra. (Nel buddhismo, un bodhisattva è una persona che sceglie di continuare a reincarnarsi, sotto la spinta della compassione, per dedicarsi ad aiutare gli altri esseri umani, spendendo per loro i propri meriti).</p>
+                        <p>I funghi connettono gli ecosistemi del pianeta come una rete. Perché li disegno... non lo so, non l'ho mai deciso.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Come nascono le tue creature?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le mie creature prendono vita spontaneamente, sempre uniche, sempre in sintonia, come una grammatica per un linguaggio.</p>
+                        <p>Non ho mai deliberatamente scelto o selezionato il mio stile artistico, amo osservare ciò che dipingo e non dipingere ciò che vedo, e... imparo. I miei quadri sono tutti maestri che mi appartengono.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Hai una formazione artistica accademica?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non ho mai frequentato scuole di arte, sono uno spericolato e totale autodidatta.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contatti" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contatti</h2>
+            <div class="contact-content-wrapper">
+                <div class="contact-info-section">
+                    <p class="contact-intro">Per informazioni e collaborazioni</p>
+                    <div class="contact-info">
+                        <p><strong>Location:</strong> Sitges, Barcellona, Spagna</p>
+                        <p><strong>Call:</strong> <a href="tel:+34663537485">+34 663 537 485</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:manuelric@libero.it">manuelric@libero.it</a></p>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11975.123456789!2d1.8058!3d41.2370!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a3e3a3a3a3a3a3%3A0x1234567890abcdef!2sSitges%2C%20Barcelona%2C%20Spain!5e0!3m2!1sen!2sit!4v1234567890123!5m2!1sen!2sit" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Mappa di Sitges, Barcellona, Spagna">
+                    </iframe>
+                    <p style="margin-top: 15px; font-size: 14px; color: var(--accent-color);">
+                        <a href="https://www.google.com/maps/place/Sitges,+Barcelona,+Spain/@41.2370,1.8058,15z" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: underline;">
+                            Visualizza Sitges su Google Maps
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Manuel Riccardi. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

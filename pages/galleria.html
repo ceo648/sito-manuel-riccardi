@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galleria Opere - Manuel Riccardi</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .gallery-page {
+            padding: 120px 20px 100px;
+            background-color: var(--bg-color);
+        }
+        
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .gallery-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .gallery-header p {
+            font-size: 18px;
+            color: var(--accent-color);
+        }
+        
+        .gallery-grid-page {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .artwork-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .artwork-pair .artwork-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artwork-row-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            align-items: start;
+        }
+        
+        @media (max-width: 1024px) {
+            .artwork-row-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .artwork-pair {
+                grid-template-columns: 1fr;
+            }
+            
+            .artwork-row-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .artwork-item {
+            background-color: transparent;
+            border-radius: 20px;
+            overflow: visible;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artwork-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .artwork-image {
+            width: 100%;
+            height: 500px;
+            background: #f5f5f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .artwork-image img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            object-position: center;
+        }
+        
+        .artwork-info {
+            padding: 25px;
+        }
+        
+        .artwork-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .artwork-medium {
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+        
+        .artwork-year {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .artwork-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .artwork-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-grid-page {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Torna alla Home</a>
+    
+    <div class="gallery-page">
+        <div class="gallery-header">
+            <h1>Galleria Opere</h1>
+            <p>Esplora la collezione completa delle opere di Manuel Riccardi</p>
+        </div>
+        
+        <div class="gallery-grid-page" id="artworksGrid">
+            <!-- Le opere verranno caricate qui dinamicamente -->
+        </div>
+    </div>
+    
+    <!-- Modal for artwork details -->
+    <div class="artwork-modal" id="artworkModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img src="" alt="" class="modal-image" id="modalImage">
+        </div>
+    </div>
+    
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop" aria-label="Torna in cima">↑</button>
+    
+    <script>
+        // Funzione per calcolare le proporzioni dalle dimensioni
+        function calculateAspectRatio(dimensions) {
+            const match = dimensions.match(/(\d+)x(\d+)/);
+            if (match) {
+                const width = parseInt(match[1]);
+                const height = parseInt(match[2]);
+                return { width, height, ratio: width / height };
+            }
+            return { width: 1, height: 1, ratio: 1 };
+        }
+        
+        // Opere d'arte
+        const artworks = [
+            {
+                image: '../assets/opere in galleria/Las Amigas.webp',
+                title: 'Las Amigas',
+                medium: 'Acrilico su tela',
+                year: '2015',
+                dimensions: '100x70 cm',
+                aspectRatio: calculateAspectRatio('100x70 cm')
+            },
+            {
+                image: '../assets/opere in galleria/La Espera.webp',
+                title: 'La Espera',
+                medium: 'Tecnica mista su tela',
+                year: '2015',
+                dimensions: '115x90 cm',
+                aspectRatio: calculateAspectRatio('115x90 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El milagro de la postura.webp',
+                title: 'El milagro de la postura',
+                medium: 'Acrílico e pigmenti su tela',
+                year: '2019',
+                dimensions: '130x200 cm',
+                aspectRatio: calculateAspectRatio('130x200 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Misti.webp',
+                title: 'Misti',
+                medium: 'Acrilico su tela',
+                year: '2009',
+                dimensions: '80x60 cm',
+                aspectRatio: calculateAspectRatio('80x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Idiomas.webp',
+                title: 'Idiomas',
+                medium: 'Tecnica mista su tela',
+                year: '2022',
+                dimensions: '70x50 cm',
+                aspectRatio: calculateAspectRatio('70x50 cm')
+            },
+            {
+                image: '../assets/opere in galleria/La búsqueda del valor .webp',
+                title: 'La búsqueda del valor',
+                medium: 'Acrilico su tela',
+                year: '2022',
+                dimensions: '60x60 cm',
+                aspectRatio: calculateAspectRatio('60x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Il tempio in testa .png',
+                title: 'Il tempio in testa',
+                medium: 'Acrilico su Tela',
+                year: '2010',
+                dimensions: '70x90 cm',
+                aspectRatio: calculateAspectRatio('70x90 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Senza Titolo .webp',
+                title: 'Senza Titolo',
+                medium: 'Tecnica mista su tela',
+                year: '2015',
+                dimensions: '130x200 cm',
+                aspectRatio: calculateAspectRatio('130x200 cm')
+            },
+            {
+                image: '../assets/opere in galleria/La Fede .webp',
+                title: 'La Fede',
+                medium: 'Matita su carta lucida',
+                year: '2004',
+                dimensions: '100x140 cm',
+                aspectRatio: calculateAspectRatio('100x140 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Leggerezza .webp',
+                title: 'Leggerezza',
+                medium: 'Olio e acrilico su tela',
+                year: '2013',
+                dimensions: '80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Innecesario .webp',
+                title: 'Innecesario',
+                medium: 'Tecnica mista su tela',
+                year: 'Da definire',
+                dimensions: '50x70 cm',
+                aspectRatio: calculateAspectRatio('50x70 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Richiamo.webp',
+                title: 'Richiamo',
+                medium: 'Tecnica mista su tela',
+                year: '2012',
+                dimensions: '100x100 cm',
+                aspectRatio: calculateAspectRatio('100x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Flussi.webp',
+                title: 'Flussi',
+                medium: 'Olio e smalto su tela',
+                year: '2013',
+                dimensions: '60x60 cm',
+                aspectRatio: calculateAspectRatio('60x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Otra Mirada .webp',
+                title: 'Otra Mirada',
+                medium: 'Tecnica mista su tela',
+                year: '2018',
+                dimensions: '70x50 cm',
+                aspectRatio: calculateAspectRatio('70x50 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El otro .webp',
+                title: 'El otro',
+                medium: 'Olio e vernice su tela',
+                year: '2015',
+                dimensions: '130x200 cm',
+                aspectRatio: calculateAspectRatio('130x200 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Rivelazione.webp',
+                title: 'Rivelazione',
+                medium: 'Tecnica mista su tela',
+                year: '2012',
+                dimensions: '100x100 cm',
+                aspectRatio: calculateAspectRatio('100x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Il sacrificio .webp',
+                title: 'Il sacrificio',
+                medium: 'Tecnica mista su tela',
+                year: '2015',
+                dimensions: '35x27 cm',
+                aspectRatio: calculateAspectRatio('35x27 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Paseo.webp',
+                title: 'Paseo',
+                medium: 'Olio su tela',
+                year: '2015',
+                dimensions: '50x40 cm',
+                aspectRatio: calculateAspectRatio('50x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Falta de cielo .webp',
+                title: 'Falta de cielo',
+                medium: 'Acrilico e smalto su tela',
+                year: 'Da definire',
+                dimensions: '40x40 cm',
+                aspectRatio: calculateAspectRatio('40x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Ideogramas .png',
+                title: 'Ideogramas',
+                medium: 'Acrilico e carta su tela',
+                year: 'Da definire',
+                dimensions: '30x30 cm',
+                aspectRatio: calculateAspectRatio('30x30 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Ambientarse .webp',
+                title: 'Ambientarse',
+                medium: 'Tecnica mista su tela',
+                year: '2013',
+                dimensions: '100x200 cm',
+                aspectRatio: calculateAspectRatio('100x200 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Il pastore degli alberi .webp',
+                title: 'Il pastore degli alberi',
+                medium: 'Acrilico su tela',
+                year: '2010',
+                dimensions: '2 tele 100x70 cm',
+                aspectRatio: calculateAspectRatio('100x70 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Migliorarsi dentro .webp',
+                title: 'Migliorarsi dentro',
+                medium: 'Acrilico su tela',
+                year: '2006',
+                dimensions: '80x100 cm',
+                aspectRatio: calculateAspectRatio('80x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Sin titulo .webp',
+                title: 'Sin titulo',
+                medium: 'Acrilico su tela',
+                year: '2021',
+                dimensions: '60x60 cm',
+                aspectRatio: calculateAspectRatio('60x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Miedo.webp',
+                title: 'Miedo',
+                medium: 'Acrilico su tela',
+                year: '2011',
+                dimensions: '100x100 cm',
+                aspectRatio: calculateAspectRatio('100x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Passione .webp',
+                title: 'Passione',
+                medium: 'Tecnica mista su tela',
+                year: '2012',
+                dimensions: '100x100 cm',
+                aspectRatio: calculateAspectRatio('100x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Centrare 3.webp',
+                title: 'Centrare 3',
+                medium: 'Tecnica mista su due tele',
+                year: '2013',
+                dimensions: '2 tele 80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Centrare 4 .webp',
+                title: 'Centrare 4',
+                medium: 'Tecnica mista su tela',
+                year: '2013',
+                dimensions: '60x60 cm',
+                aspectRatio: calculateAspectRatio('60x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/La collezionista di nasi .webp',
+                title: 'La collezionista di nasi',
+                medium: 'Tecnica mista su tela',
+                year: '2012',
+                dimensions: '40x50 cm',
+                aspectRatio: calculateAspectRatio('40x50 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Las Heridas .webp',
+                title: 'Las Heridas',
+                medium: 'Tecnica mista su tela',
+                year: '2015',
+                dimensions: '3 tele da 35x27 cm',
+                aspectRatio: calculateAspectRatio('35x27 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Después de luchar .webp',
+                title: 'Después de luchar',
+                medium: 'Tecnica mista su tela',
+                year: '2018',
+                dimensions: '130x60 cm',
+                aspectRatio: calculateAspectRatio('130x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/senza titolo, 2020 .webp',
+                title: 'Senza titolo, 2020',
+                medium: 'Tecnica mista su carta',
+                year: '2020',
+                dimensions: '110x75 cm',
+                aspectRatio: calculateAspectRatio('110x75 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Así es .webp',
+                title: 'Así es',
+                medium: 'Tecnica mista su tela',
+                year: '2018',
+                dimensions: '200x100 cm',
+                aspectRatio: calculateAspectRatio('200x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/La Sorda .webp',
+                title: 'La Sorda',
+                medium: 'Olio su tela',
+                year: '2014',
+                dimensions: '130x45 cm',
+                aspectRatio: calculateAspectRatio('130x45 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El Dragon .webp',
+                title: 'El Dragon',
+                medium: 'Tecnica mista su tela',
+                year: '2015',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El origen del amor .webp',
+                title: 'El origen del amor',
+                medium: 'Olio su tela',
+                year: '2015',
+                dimensions: '4 tele da 80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Él.webp',
+                title: 'Él',
+                medium: 'Tecnica mista su tela',
+                year: '2018',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Ella .webp',
+                title: 'Ella',
+                medium: 'Tecnica mista su tela',
+                year: '2018',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Bacio.webp',
+                title: 'Bacio',
+                medium: 'Olio su tela',
+                year: '2020',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El poder de la pregaria .webp',
+                title: 'El poder de la pregaria',
+                medium: 'Tecnica mista su tela',
+                year: '2020',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Figura sacra .webp',
+                title: 'Figura sacra',
+                medium: 'Tecnica mista su tela',
+                year: '2005',
+                dimensions: '100x80 cm',
+                aspectRatio: calculateAspectRatio('100x80 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Illusione del suicidio .webp',
+                title: 'Illusione del suicidio',
+                medium: 'Olio su tela',
+                year: '2006',
+                dimensions: '100x70 cm',
+                aspectRatio: calculateAspectRatio('100x70 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Abrir lo cercano para ver lo lejano.webp',
+                title: 'Abrir lo cercano para ver lo lejano',
+                medium: 'Tecnica mista su tela',
+                year: '2022',
+                dimensions: '80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Maschere fuori taglia .webp',
+                title: 'Maschere fuori taglia',
+                medium: 'Olio su tela',
+                year: '2009',
+                dimensions: '120x100 cm',
+                aspectRatio: calculateAspectRatio('120x100 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Allineamento Cuore Mente.jpeg',
+                title: 'Allineamento Cuore Mente',
+                medium: 'Tecnica mista su tela',
+                year: '2010',
+                dimensions: '100x150 cm',
+                aspectRatio: calculateAspectRatio('100x150 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Buco nero .webp',
+                title: 'Buco nero',
+                medium: 'Tecnica mista su tela',
+                year: '2008',
+                dimensions: '150x60 cm',
+                aspectRatio: calculateAspectRatio('150x60 cm')
+            },
+            {
+                image: '../assets/opere in galleria/senza titolo, 2021 .webp',
+                title: 'senza titolo, 2021',
+                medium: 'Tecnica mista su tela',
+                year: '2021',
+                dimensions: 'Da definire',
+                aspectRatio: { width: 1, height: 1, ratio: 1 }
+            },
+            {
+                image: '../assets/opere in galleria/Permitírselo.webp',
+                title: 'Permitírselo',
+                medium: 'Acrilico su tela',
+                year: '2021',
+                dimensions: '130x80 cm',
+                aspectRatio: calculateAspectRatio('130x80 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El llanto del juglar .webp',
+                title: 'El llanto del juglar',
+                medium: 'Olio su tela',
+                year: '2021',
+                dimensions: '130x80 cm',
+                aspectRatio: calculateAspectRatio('130x80 cm')
+            },
+            {
+                image: '../assets/opere in galleria/Elefante loco .webp',
+                title: 'Elefante loco',
+                medium: 'Tecnica mista su tela',
+                year: '2013',
+                dimensions: '200x130 cm',
+                aspectRatio: calculateAspectRatio('200x130 cm')
+            },
+            {
+                image: '../assets/opere in galleria/El Viajante .webp',
+                title: 'El Viajante',
+                medium: 'Olio su tela',
+                year: '2021',
+                dimensions: '65x54 cm',
+                aspectRatio: calculateAspectRatio('65x54 cm')
+            },
+            {
+                image: '../assets/opere in galleria/en la tierra impura  copia.jpeg',
+                title: 'En la tierra impura',
+                medium: 'Tecnica mista su tela',
+                year: '2025',
+                dimensions: '80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/en la tierra infértil  copia.jpeg',
+                title: 'En la tierra infértil',
+                medium: 'Tecnica mista su tela',
+                year: '2025',
+                dimensions: '80x40 cm',
+                aspectRatio: calculateAspectRatio('80x40 cm')
+            },
+            {
+                image: '../assets/opere in galleria/contra corriente.png',
+                title: 'Contra corriente',
+                medium: 'Acrilico su tela',
+                year: '2020',
+                dimensions: '130x200 cm',
+                aspectRatio: calculateAspectRatio('130x200 cm')
+            }
+        ];
+        
+        const grid = document.getElementById('artworksGrid');
+        
+        // Funzione per trovare un'opera per titolo
+        function findArtworkByTitle(title) {
+            return artworks.find(artwork => artwork.title === title);
+        }
+        
+        // Ordine specifico delle opere
+        const orderedPairs = [
+            ['Las Amigas', 'La Espera'],
+            ['El milagro de la postura', 'Misti'],
+            ['Senza Titolo', 'Il tempio in testa'],
+            ['Ambientarse', 'Il pastore degli alberi'],
+            ['Migliorarsi dentro', 'Sin titulo'],
+            ['Bacio', 'El poder de la pregaria'],
+            ['Elefante loco', 'Permitírselo'],
+            ['Él', 'Ella'],
+            ['En la tierra impura', 'En la tierra infértil'],
+            ['Abrir lo cercano para ver lo lejano', 'Maschere fuori taglia'],
+            ['Miedo', 'Passione'],
+            ['El otro', 'Rivelazione'],
+            ['Así es', 'La Sorda'],
+            ['El llanto del juglar', 'El Viajante'],
+            ['Flussi', 'Otra Mirada'],
+            ['Il sacrificio', 'Paseo'],
+            ['La Fede', 'Innecesario'],
+            ['Falta de cielo', 'Ideogramas'],
+            ['Después de luchar', 'Senza titolo, 2020'],
+            ['El origen del amor', 'El Dragon'],
+            ['Leggerezza', 'Richiamo'],
+            ['Figura sacra', 'Illusione del suicidio'],
+            ['Allineamento Cuore Mente', 'Buco nero'],
+            ['La collezionista di nasi', 'Las Heridas'],
+            ['Centrare 4', 'Centrare 3'],
+            ['senza titolo, 2021', 'Idiomas'],
+            ['Contra corriente', 'La búsqueda del valor']
+        ];
+        
+        // Crea le coppie ordinate
+        const pairsArray = [];
+        for (const pair of orderedPairs) {
+            const artwork1 = findArtworkByTitle(pair[0]);
+            const artwork2 = pair[1] ? findArtworkByTitle(pair[1]) : null;
+            
+            if (artwork1) {
+                if (artwork2) {
+                    pairsArray.push([artwork1, artwork2]);
+                } else {
+                    // Se c'è solo un'opera, crea una coppia con un elemento solo
+                    pairsArray.push([artwork1]);
+                }
+            }
+        }
+        
+        // Array vuoti per le righe da 4 (non più utilizzate)
+        const firstRowOfFourArray = [];
+        const secondRowOfFourArray = [];
+        const thirdRowOfFourArray = [];
+        
+        if (artworks.length > 0) {
+            
+            // Funzione per renderizzare le coppie e le righe da 4
+            function renderPairs() {
+                const pairsHtml = pairsArray.map(pair => {
+                    // Se la coppia ha solo un elemento, aggiungi un div vuoto per mantenere il layout
+                    const artworksHtml = pair.map(artwork => {
+                        return `
+                            <div class="artwork-item">
+                                <div class="artwork-image">
+                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                </div>
+                                <div class="artwork-info">
+                                    <div class="artwork-title">${artwork.title}</div>
+                                    <div class="artwork-medium">${artwork.medium}</div>
+                                    ${artwork.dimensions ? `<div class="artwork-dimensions" style="font-size: 14px; color: var(--accent-color); margin-top: 5px;">${artwork.dimensions}</div>` : ''}
+                                    <div class="artwork-year">${artwork.year}</div>
+                                </div>
+                            </div>
+                            `;
+                    }).join('');
+                    
+                    // Se c'è solo un'opera, aggiungi un div vuoto per mantenere il layout a coppie
+                    const emptyItem = pair.length === 1 ? '<div class="artwork-item" style="visibility: hidden;"></div>' : '';
+                    
+                    return `
+                    <div class="artwork-pair">
+                        ${artworksHtml}${emptyItem}
+                    </div>
+                    `;
+                }).join('');
+                
+                const firstRowOfFourHtml = firstRowOfFourArray.length === 4
+                    ? `
+                    <div class="artwork-row-4">
+                        ${firstRowOfFourArray.map(artwork => {
+                            return `
+                            <div class="artwork-item">
+                                <div class="artwork-image">
+                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                </div>
+                                <div class="artwork-info">
+                                    <div class="artwork-title">${artwork.title}</div>
+                                    <div class="artwork-medium">${artwork.medium}</div>
+                                    ${artwork.dimensions ? `<div class="artwork-dimensions" style="font-size: 14px; color: var(--accent-color); margin-top: 5px;">${artwork.dimensions}</div>` : ''}
+                                    <div class="artwork-year">${artwork.year}</div>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    `
+                    : '';
+                
+                const secondRowOfFourHtml = secondRowOfFourArray.length === 4
+                    ? `
+                    <div class="artwork-row-4">
+                        ${secondRowOfFourArray.map(artwork => {
+                            return `
+                            <div class="artwork-item">
+                                <div class="artwork-image">
+                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                </div>
+                                <div class="artwork-info">
+                                    <div class="artwork-title">${artwork.title}</div>
+                                    <div class="artwork-medium">${artwork.medium}</div>
+                                    ${artwork.dimensions ? `<div class="artwork-dimensions" style="font-size: 14px; color: var(--accent-color); margin-top: 5px;">${artwork.dimensions}</div>` : ''}
+                                    <div class="artwork-year">${artwork.year}</div>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    `
+                    : '';
+                
+                const thirdRowOfFourHtml = thirdRowOfFourArray.length === 4
+                    ? `
+                    <div class="artwork-row-4">
+                        ${thirdRowOfFourArray.map(artwork => {
+                            return `
+                            <div class="artwork-item">
+                                <div class="artwork-image">
+                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                </div>
+                                <div class="artwork-info">
+                                    <div class="artwork-title">${artwork.title}</div>
+                                    <div class="artwork-medium">${artwork.medium}</div>
+                                    ${artwork.dimensions ? `<div class="artwork-dimensions" style="font-size: 14px; color: var(--accent-color); margin-top: 5px;">${artwork.dimensions}</div>` : ''}
+                                    <div class="artwork-year">${artwork.year}</div>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    `
+                    : '';
+                
+                grid.innerHTML = pairsHtml + firstRowOfFourHtml + secondRowOfFourHtml + thirdRowOfFourHtml;
+            }
+            
+            // Renderizza inizialmente
+            renderPairs();
+        } else {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                    <p style="font-size: 18px; color: var(--accent-color);">
+                        Le opere verranno aggiunte presto. Controlla di nuovo a breve.
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Modal functionality
+        const modal = document.getElementById('artworkModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+        
+        document.querySelectorAll('.artwork-item').forEach((item) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('.artwork-image img');
+                if (img) {
+                    modalImage.src = img.src;
+                    modalImage.alt = img.alt;
+                    modal.classList.add('active');
+                }
+            });
+        });
+        
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        
+        // Back to top functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        // Mostra/nascondi il pulsante in base allo scroll
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // Scroll smooth al click
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

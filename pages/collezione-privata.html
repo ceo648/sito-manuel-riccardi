@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collezione Privata - Manuel Riccardi</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .private-collection {
+            padding: 120px 20px 100px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+        
+        .collection-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .collection-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .collection-header p {
+            font-size: 18px;
+            color: var(--accent-color);
+        }
+        
+        
+        .collection-grid-page {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .artwork-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .artwork-pair .artwork-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 768px) {
+            .artwork-pair {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .artwork-item {
+            background-color: transparent;
+            border-radius: 20px;
+            overflow: visible;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artwork-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .artwork-image {
+            width: 100%;
+            height: 500px;
+            background: #f5f5f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .artwork-image img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            object-position: center;
+        }
+        
+        .artwork-info {
+            padding: 25px;
+        }
+        
+        .artwork-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .artwork-medium {
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+        
+        .artwork-year {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+        
+        .artwork-dimensions {
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+        
+        .artwork-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .artwork-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .back-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Torna alla Home</a>
+    
+    <div class="private-collection">
+        <div class="collection-header">
+            <h1>Collezione Privata</h1>
+            <p>Esplora la collezione privata di Manuel Riccardi</p>
+        </div>
+        
+        <div class="collection-grid-page" id="privateArtworksGrid">
+                <!-- Le opere private verranno caricate qui -->
+            </div>
+    </div>
+    
+    <!-- Modal for artwork details -->
+    <div class="artwork-modal" id="artworkModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img src="" alt="" class="modal-image" id="modalImage">
+        </div>
+    </div>
+    
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop" aria-label="Torna in cima">↑</button>
+    
+    <script>
+        // Funzione per pulire il nome del file e creare il titolo
+        function getTitleFromFilename(filename) {
+            // Rimuovi l'estensione
+            let title = filename.replace(/\.(jpeg|jpg|webp|png)$/i, '');
+            // Rimuovi spazi multipli e trim
+            title = title.trim();
+            return title;
+        }
+        
+        // Opere della collezione privata
+        const privateArtworks = [
+            { image: '../assets/Opere collezioni private/animalità e umanità.jpeg', title: 'Animalità e umanità', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x70 cm' },
+            { image: '../assets/Opere collezioni private/Artisti in movimento .jpeg', title: 'Artisti in movimento', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x70 cm' },
+            { image: '../assets/Opere collezioni private/Attaccamento all\'oscurità .jpeg', title: 'Attaccamento all\'oscurità', medium: 'Matite acquarellabili su tela', year: 'Da definire', dimensions: '50x40 cm' },
+            { image: '../assets/Opere collezioni private/Blah Blah Blah .jpeg', title: 'Blah Blah Blah', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '80x120 cm' },
+            { image: '../assets/Opere collezioni private/Bolando  .webp', title: 'Bolando', medium: 'Acrilico, Lacca su tela', year: 'Da definire', dimensions: '80x40 cm' },
+            { image: '../assets/Opere collezioni private/Centrare 1 .jpeg', title: 'Centrare 1', medium: 'Tecnica mista su 4 tele', year: 'Da definire', dimensions: '60x60 cm' },
+            { image: '../assets/Opere collezioni private/Centrare 5 .jpeg', title: 'Centrare 5', medium: 'Tecnica mista su tela', year: 'Da definire', dimensions: '60x60 cm' },
+            { image: '../assets/Opere collezioni private/Clown .jpeg', title: 'Clown', medium: 'Olio su tela', year: 'Da definire', dimensions: '64x84 cm' },
+            { image: '../assets/Opere collezioni private/Colate di valore .jpeg', title: 'Colate di valore', medium: 'Tecnica mista su tela', year: 'Da definire', dimensions: '60x60 cm' },
+            { image: '../assets/Opere collezioni private/Come se fosse .jpeg', title: 'Come se fosse', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '60x80 cm' },
+            { image: '../assets/Opere collezioni private/Complicità invisibile .jpeg', title: 'Complicità invisibile', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '70x100 cm' },
+            { image: '../assets/Opere collezioni private/Coperta di madre .jpeg', title: 'Coperta di madre', medium: 'Matita su carta', year: 'Da definire', dimensions: '32x24 cm' },
+            { image: '../assets/Opere collezioni private/Covare in testa .jpeg', title: 'Covare in testa', medium: 'Olio su tela', year: 'Da definire', dimensions: '30x125 cm' },
+            { image: '../assets/Opere collezioni private/Creatura luminosa .jpeg', title: 'Creatura luminosa', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Dentro .jpeg', title: 'Dentro', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '120x60 cm' },
+            { image: '../assets/Opere collezioni private/Dialogo tra funghi .jpeg', title: 'Dialogo tra funghi', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Donna dualità .jpeg', title: 'Donna dualità', medium: 'Tecnica mista su tela', year: 'Da definire', dimensions: '80x100 cm' },
+            { image: '../assets/Opere collezioni private/E il cuore che conta .jpeg', title: 'E il cuore che conta', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '24x30 cm' },
+            { image: '../assets/Opere collezioni private/El conflicte del cavallo .jpeg', title: 'El conflicte del cavallo', medium: 'Tecnica mista', year: 'Da definire', dimensions: '40x40 cm' },
+            { image: '../assets/Opere collezioni private/Emergere.jpeg', title: 'Emergere', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x50 cm' },
+            { image: '../assets/Opere collezioni private/Emersi .jpeg', title: 'Emersi', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x50 cm' },
+            { image: '../assets/Opere collezioni private/Giardino dei legami.jpeg', title: 'Giardino dei legami', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Giornalismo .jpeg', title: 'Giornalismo', medium: 'Acrilico e collage su 3 tele', year: 'Da definire', dimensions: '30x30 cm' },
+            { image: '../assets/Opere collezioni private/Gratitudine ai genitori .jpeg', title: 'Gratitudine ai genitori', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '50x100 cm' },
+            { image: '../assets/Opere collezioni private/Gravidanza .jpeg', title: 'Gravidanza', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Hamsterdam .jpeg', title: 'Hamsterdam', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x100 cm' },
+            { image: '../assets/Opere collezioni private/I guardiani .jpeg', title: 'I guardiani', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Il bosco stregato .jpeg', title: 'Il bosco stregato', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Il ciclismo .jpeg', title: 'Il ciclismo', medium: 'Olio su tela', year: 'Da definire', dimensions: '100x50 cm' },
+            { image: '../assets/Opere collezioni private/Il re dei balordi .jpeg', title: 'Il re dei balordi', medium: 'Olio e acrilico su tela', year: 'Da definire', dimensions: '150x100 cm' },
+            { image: '../assets/Opere collezioni private/Il ritorno .jpeg', title: 'Il ritorno', medium: 'Matite su carta', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Intimità .jpeg', title: 'Intimità', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '30x40 cm' },
+            { image: '../assets/Opere collezioni private/Kiss .jpeg', title: 'Kiss', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x70 cm' },
+            { image: '../assets/Opere collezioni private/L\'alba.jpeg', title: 'L\'alba', medium: 'Matite su carta', year: 'Da definire', dimensions: '35x100 cm' },
+            { image: '../assets/Opere collezioni private/L\'artista .jpeg', title: 'L\'artista', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x70 cm' },
+            { image: '../assets/Opere collezioni private/L\'ispirata.jpeg', title: 'L\'ispirata', medium: 'Olio su tela', year: 'Da definire', dimensions: '35x47 cm' },
+            { image: '../assets/Opere collezioni private/L\'unione.jpeg', title: 'L\'unione', medium: 'Matite su carta', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/La carezza .jpeg', title: 'La carezza', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x50 cm' },
+            { image: '../assets/Opere collezioni private/La complicità .jpeg', title: 'La complicità', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '200x80 cm' },
+            { image: '../assets/Opere collezioni private/La elecciòn del huevo .jpeg', title: 'La elección del huevo', medium: 'Acrilico', year: 'Da definire', dimensions: '130x45 cm' },
+            { image: '../assets/Opere collezioni private/La fioritura .jpeg', title: 'La fioritura', medium: 'Tecnica mista', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/La flor escondida .jpeg', title: 'La flor escondida', medium: 'Tecnica mista', year: 'Da definire', dimensions: '40x80 cm' },
+            { image: '../assets/Opere collezioni private/La mari posa .jpeg', title: 'La mari posa', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x80 cm' },
+            { image: '../assets/Opere collezioni private/La mia scuola .jpeg', title: 'La mia scuola', medium: 'Tecnica mista', year: 'Da definire', dimensions: '150x100 cm' },
+            { image: '../assets/Opere collezioni private/La passeggiata .jpeg', title: 'La passeggiata', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '50x100 cm' },
+            { image: '../assets/Opere collezioni private/La rivoluzione umana .jpeg', title: 'La rivoluzione umana', medium: 'Tecnica mista', year: 'Da definire', dimensions: '125x60 cm' },
+            { image: '../assets/Opere collezioni private/La soltera .jpeg', title: 'La soltera', medium: 'Olio su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/La testa nell\'ambiente .jpeg', title: 'La testa nell\'ambiente', medium: 'Tecnica mista su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Lasciare andare .jpeg', title: 'Lasciare andare', medium: 'Tecnica mista', year: 'Da definire', dimensions: '100x150 cm' },
+            { image: '../assets/Opere collezioni private/Lega .jpeg', title: 'Lega', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '45x120 cm' },
+            { image: '../assets/Opere collezioni private/Lulu la loca .jpeg', title: 'Lulu la loca', medium: 'Olio e acrilico su tela', year: 'Da definire', dimensions: '100x150 cm' },
+            { image: '../assets/Opere collezioni private/Lumaca in testa .jpeg', title: 'Lumaca in testa', medium: 'Olio su tela', year: 'Da definire', dimensions: '35x60 cm' },
+            { image: '../assets/Opere collezioni private/Madre natura .jpeg', title: 'Madre natura', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x50 cm' },
+            { image: '../assets/Opere collezioni private/Meditando .jpeg', title: 'Meditando', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Messico .jpeg', title: 'Messico', medium: 'Matite su carta', year: 'Da definire', dimensions: '35,5x31 cm' },
+            { image: '../assets/Opere collezioni private/Mezclar .jpeg', title: 'Mezclar', medium: 'Matita acquarella su carta', year: 'Da definire', dimensions: '29,7x42 cm' },
+            { image: '../assets/Opere collezioni private/Milva .jpeg', title: 'Milva', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '60x120 cm' },
+            { image: '../assets/Opere collezioni private/Nascita emotiva .jpeg', title: 'Nascita emotiva', medium: 'Gessi su carta', year: 'Da definire', dimensions: '150x100 cm' },
+            { image: '../assets/Opere collezioni private/Nel nascere .jpeg', title: 'Nel nascere', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Noi.jpeg', title: 'Noi', medium: 'Acrilico su 3 tele', year: 'Da definire', dimensions: '50x50 cm' },
+            { image: '../assets/Opere collezioni private/Nuova maschera di pace .jpeg', title: 'Nuova maschera di pace', medium: 'Matite su carta', year: 'Da definire', dimensions: '30x70 cm' },
+            { image: '../assets/Opere collezioni private/Osso buco .jpeg', title: 'Osso buco', medium: 'Tecnica mista su cartone', year: 'Da definire', dimensions: '35x45 cm' },
+            { image: '../assets/Opere collezioni private/Otto .jpeg', title: 'Otto', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x80 cm' },
+            { image: '../assets/Opere collezioni private/Pendenza .jpeg', title: 'Pendenza', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '30x125 cm' },
+            { image: '../assets/Opere collezioni private/Piacere mentale .jpeg', title: 'Piacere mentale', medium: 'Matite su carta', year: 'Da definire', dimensions: '150x100 cm' },
+            { image: '../assets/Opere collezioni private/Presenze .jpeg', title: 'Presenze', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '140x70 cm' },
+            { image: '../assets/Opere collezioni private/Profilo .jpeg', title: 'Profilo', medium: 'Tecnica mista', year: 'Da definire', dimensions: '60x123 cm' },
+            { image: '../assets/Opere collezioni private/Propagare .jpeg', title: 'Propagare', medium: 'Da definire', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Quadro d\'autore .jpeg', title: 'Quadro d\'autore', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Rapido passaggio .jpeg', title: 'Rapido passaggio', medium: 'Tecnica mista', year: 'Da definire', dimensions: '60x100 cm' },
+            { image: '../assets/Opere collezioni private/Ricrearsi .jpeg', title: 'Ricrearsi', medium: 'Olio e vernice', year: 'Da definire', dimensions: '150x100 cm' },
+            { image: '../assets/Opere collezioni private/Riflessioni .jpeg', title: 'Riflessioni', medium: 'Olio e acrilico su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Scivola  .webp', title: 'Scivola', medium: 'Olio su tela', year: 'Da definire', dimensions: '80x40 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo  copy 2.jpeg', title: 'Senza titolo copy 2', medium: 'Da definire', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo  copy.jpeg', title: 'Senza titolo copy', medium: 'Matita acquarella su carta', year: 'Da definire', dimensions: '35x51 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo .jpeg', title: 'Senza titolo', medium: 'Da definire', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo 10 .jpeg', title: 'Senza titolo 10', medium: 'Olio su tela', year: 'Da definire', dimensions: '24x30 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo 11 .jpeg', title: 'Senza titolo 11', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '40x50 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo 15 .jpeg', title: 'Senza titolo 15', medium: 'Tecnica mista', year: 'Da definire', dimensions: '30x40 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo 2 .jpeg', title: 'Senza titolo 2', medium: 'Matite su carta', year: 'Da definire', dimensions: '35,5x51 cm' },
+            { image: '../assets/Opere collezioni private/Senza titolo 3 .jpeg', title: 'Senza titolo 3', medium: 'Acrilico su due tele', year: 'Da definire', dimensions: '30x80 cm' },
+            { image: '../assets/Opere collezioni private/Sfogo emotivo .jpeg', title: 'Sfogo emotivo', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '80x120 cm' },
+            { image: '../assets/Opere collezioni private/Sin titulo .jpeg', title: 'Sin titulo', medium: 'Tecnica mista', year: 'Da definire', dimensions: '50x150 cm' },
+            { image: '../assets/Opere collezioni private/Sognare ad occhio aperto .jpeg', title: 'Sognare ad occhio aperto', medium: 'Tecnica mista su legno', year: 'Da definire', dimensions: '171x44 cm' },
+            { image: '../assets/Opere collezioni private/Sotto sopra .jpeg', title: 'Sotto sopra', medium: 'Tecnica mista su due tele', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Tela su tela .jpeg', title: 'Tela su tela', medium: 'Tecnica mista', year: 'Da definire', dimensions: '120x120 cm' },
+            { image: '../assets/Opere collezioni private/Tramonto .jpeg', title: 'Tramonto', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '70x70 cm' },
+            { image: '../assets/Opere collezioni private/Tranquillità sudata .jpeg', title: 'Tranquillità sudata', medium: 'Da definire', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Trans.jpeg', title: 'Trans', medium: 'Olio su tela', year: 'Da definire', dimensions: '70x100 cm' },
+            { image: '../assets/Opere collezioni private/Trascinati nel gioco .jpeg', title: 'Trascinati nel gioco', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Tribale .jpeg', title: 'Tribale', medium: 'Gessi su carta', year: 'Da definire', dimensions: '70x50 cm' },
+            { image: '../assets/Opere collezioni private/Tutta testa .jpeg', title: 'Tutta testa', medium: 'Olio su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Tutto il cuore .jpeg', title: 'Tutto il cuore', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '100x100 cm' },
+            { image: '../assets/Opere collezioni private/Un silenzio .jpeg', title: 'Un silenzio', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '80x100 cm' },
+            { image: '../assets/Opere collezioni private/Un sonido .jpeg', title: 'Un sonido', medium: 'Acrilico e smalto unghie su tela', year: 'Da definire', dimensions: '50x30 cm' },
+            { image: '../assets/Opere collezioni private/Valore .jpeg', title: 'Valore', medium: 'Olio e smalto unghie su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/vedere oltre .jpeg', title: 'Vedere oltre', medium: 'Matite su carta', year: 'Da definire', dimensions: '70x100 cm' },
+            { image: '../assets/Opere collezioni private/Vena artistica .jpeg', title: 'Vena artistica', medium: 'Tecnica mista su legno', year: 'Da definire', dimensions: '180x102 cm' },
+            { image: '../assets/Opere collezioni private/Vertice di 2 identità .jpeg', title: 'Vertice di 2 identità', medium: 'Matite su carta', year: 'Da definire', dimensions: '172x21 cm' },
+            { image: '../assets/Opere collezioni private/Visioni profonde .jpeg', title: 'Visioni profonde', medium: 'Acrilico su tela', year: 'Da definire', dimensions: '50x70 cm' },
+            { image: '../assets/Opere collezioni private/Volatil amb arrels .jpeg', title: 'Volatil amb arrels', medium: 'Olio e smalto su tela', year: 'Da definire', dimensions: '40x80 cm' },
+            { image: '../assets/Opere collezioni private/Zucchero in testa .jpeg', title: 'Zucchero in testa', medium: 'Tecnica mista su tela', year: 'Da definire', dimensions: '60x120 cm' }
+        ];
+        
+        const privateGrid = document.getElementById('privateArtworksGrid');
+        
+        // Funzione per calcolare l'area totale di un'opera
+        function calculateArea(dimensions) {
+            if (!dimensions || dimensions === 'Da definire') return 0;
+            const match = dimensions.match(/([\d,]+)\s*x\s*([\d,]+)/);
+            if (match) {
+                const width = parseFloat(match[1].replace(',', '.'));
+                const height = parseFloat(match[2].replace(',', '.'));
+                return width * height;
+            }
+            return 0;
+        }
+        
+        // Ordina le opere in modo estetico basato sulle dimensioni
+        // Strategia: raggruppa opere con dimensioni simili in coppie
+        function sortArtworksAesthetically(artworks) {
+            // Calcola l'area per ogni opera
+            const artworksWithArea = artworks.map(artwork => ({
+                ...artwork,
+                area: calculateArea(artwork.dimensions)
+            }));
+            
+            // Ordina per area
+            const sorted = [...artworksWithArea].sort((a, b) => b.area - a.area);
+            
+            // Raggruppa in coppie con dimensioni simili
+            // Prendi due opere vicine nell'ordinamento per area
+            const pairs = [];
+            for (let i = 0; i < sorted.length; i += 2) {
+                if (i + 1 < sorted.length) {
+                    // Coppia di due opere
+                    pairs.push([sorted[i], sorted[i + 1]]);
+                } else {
+                    // Ultima opera da sola
+                    pairs.push([sorted[i]]);
+                }
+            }
+            
+            // Rimuovi la proprietà area prima di restituire
+            return pairs.map(pair => pair.map(({area, ...artwork}) => artwork));
+        }
+        
+        if (privateArtworks.length > 0) {
+            // Ordina le opere in modo estetico (raggruppate in coppie con dimensioni simili)
+            const pairsArray = sortArtworksAesthetically(privateArtworks);
+            
+            // Renderizza le coppie
+            privateGrid.innerHTML = pairsArray.map((pair, pairIndex) => {
+                return `
+                    <div class="artwork-pair">
+                        ${pair.map((artwork, itemIndex) => {
+                            // Calcola l'indice globale per il modal
+                            let globalIndex = 0;
+                            for (let i = 0; i < pairIndex; i++) {
+                                globalIndex += pairsArray[i].length;
+                            }
+                            globalIndex += itemIndex;
+                            
+                            return `
+                            <div class="artwork-item" data-artwork-index="${globalIndex}">
+                                <div class="artwork-image">
+                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'padding: 20px; text-align: center; color: #999;\\'>Immagine non disponibile</div>';">
+                                </div>
+                                <div class="artwork-info">
+                                    <div class="artwork-title">${artwork.title}</div>
+                                    <div class="artwork-medium">${artwork.medium || 'Da definire'}</div>
+                                    ${artwork.dimensions ? `<div class="artwork-dimensions">${artwork.dimensions}</div>` : ''}
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                        ${pair.length === 1 ? '<div class="artwork-item" style="visibility: hidden;"></div>' : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            // Modal functionality
+            const modal = document.getElementById('artworkModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.getElementById('modalClose');
+            
+            document.querySelectorAll('.artwork-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    const img = item.querySelector('.artwork-image img');
+                    if (img) {
+                        modalImage.src = img.src;
+                        modalImage.alt = img.alt;
+                        modal.classList.add('active');
+                    }
+                });
+            });
+            
+            modalClose.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        } else {
+            privateGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                    <p style="font-size: 18px; color: var(--accent-color);">
+                        Le opere della collezione privata verranno aggiunte presto.
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Back to top functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        // Mostra/nascondi il pulsante in base allo scroll
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // Scroll smooth al click
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

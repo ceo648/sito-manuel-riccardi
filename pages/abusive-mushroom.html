@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abusive Mushroom - Manuel Riccardi</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .abusive-mushroom-page {
+            padding: 120px 20px 100px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+        
+        .abusive-mushroom-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .abusive-mushroom-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .abusive-mushroom-header p {
+            font-size: 18px;
+            color: var(--accent-color);
+        }
+        
+        .abusive-mushroom-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .content-section {
+            margin-bottom: 80px;
+        }
+        
+        .content-section-full {
+            margin-bottom: 60px;
+        }
+        
+        .abusive-mushroom-content p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .abusive-mushroom-content h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+        
+        .abusive-mushroom-content h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .abusive-mushroom-content ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        .abusive-mushroom-content li {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        
+        .abusive-mushroom-content strong {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .image-text-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: start;
+            margin: 50px 0;
+        }
+        
+        .image-text-layout.reverse {
+            grid-template-columns: 1.2fr 1fr;
+        }
+        
+        .abusive-mushroom-image {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .abusive-mushroom-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .abusive-mushroom-image-container {
+            position: sticky;
+            top: 120px;
+        }
+        
+        .text-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .visit-button-container {
+            margin-top: 80px;
+            padding: 0 20px;
+        }
+        
+        .visit-button {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            padding: 25px 40px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            text-align: center;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .visit-button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 3px solid var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 1024px) {
+            .image-text-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .abusive-mushroom-image-container {
+                position: relative;
+                top: 0;
+            }
+            
+            .visit-button {
+                font-size: 20px;
+                padding: 20px 30px;
+            }
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            z-index: 999;
+        }
+        
+        .back-button:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .back-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+            
+            .abusive-mushroom-header h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Torna alla Home</a>
+    
+    <div class="abusive-mushroom-page">
+        <div class="abusive-mushroom-header">
+            <h1>Abusive Mushroom</h1>
+            <p>Un progetto artistico che fonde arte, ecologia e spiritualità</p>
+        </div>
+        
+        <div class="abusive-mushroom-content">
+            <div class="content-section">
+                <div class="image-text-layout">
+                    <div class="abusive-mushroom-image-container">
+                        <img src="../assets/abusive mushroom/berlino.jpeg" alt="Opera Abusive Mushroom a Berlino" class="abusive-mushroom-image">
+                    </div>
+                    
+                    <div class="text-content">
+                        <h2>Cos'è Abusive Mushroom?</h2>
+                        
+                        <p>Nel 2011, l'artista Manuel Riccardi decise di sovvertire le regole del mercato dell'arte. Stanco delle logiche esclusive e costose delle gallerie, abbracciò un concetto radicale: l'arte in movimento. Nacque così il progetto "Abusive Mushroom", un'idea che fonde arte, ecologia e spiritualità in un gesto poetico e anarchico.</p>
+                        
+                        <p>Riccardi disegna un unico soggetto da sempre: un fungo. Questo elemento, riprodotto in dipinti e opere di vario formato, non è solo un segno distintivo ma un simbolo profondo. Le sue opere non vengono vendute né esposte in spazi convenzionali: vengono abbandonate, lasciate in luoghi casuali o significativi, alla mercé del destino e dell'incontro. Chi le trova diventa un "collezionista per caso", trasformandosi da semplice passante in custode di un frammento di questo ciclo artistico.</p>
+                        
+                        <h3>IL FUNGO COME SIMBOLO DI CONNESSIONE E POTENZIALITÀ</h3>
+                        
+                        <p>Il fungo non è solo una rappresentazione estetica, ma un simbolo potente di connessione e rigenerazione. Nel regno naturale, i funghi sono tra gli organismi più antichi e sofisticati. Il loro micelio, la rete sotterranea di filamenti fungini, è una delle più complesse strutture biologiche esistenti: collega alberi e piante in una sorta di internet naturale, permettendo scambi di nutrienti, segnali di allarme e persino strategie di sopravvivenza condivise.</p>
+                        
+                        <p>Allo stesso modo, Riccardi semina le sue opere affinché creino connessioni imprevedibili tra le persone. Un'opera lasciata in un parco, su una panchina o in una stazione ferroviaria diventa un nodo di questa rete invisibile, generando incontri e riflessioni.</p>
+                        
+                        <p>I funghi inoltre hanno capacità straordinarie:</p>
+                        
+                        <ul>
+                            <li><strong>Biorisanamento:</strong> possono assorbire e trasformare sostanze tossiche, ripulendo il suolo e l'acqua.</li>
+                            <li><strong>Rigenerazione:</strong> alcuni funghi crescono dopo incendi devastanti, ripopolando terreni bruciati.</li>
+                            <li><strong>Intelligenza collettiva:</strong> pur senza un cervello, il micelio prende decisioni complesse, adattandosi all'ambiente in modo sorprendente.</li>
+                        </ul>
+                        
+                        <h3>IL LEGAME CON I BODHISATTVA: FUNGHI E ILLUMINAZIONE</h3>
+                        
+                        <p>In un parallelo tra natura e spiritualità, il fungo di Riccardi ricorda anche le figure dei Bodhisattva, esseri illuminati nella tradizione buddhista che, pur avendo raggiunto l'illuminazione, scelgono di rimanere nel mondo per aiutare gli altri a trovare la via.</p>
+                        
+                        <p>I Bodhisattva emergono dalla terra del Samsara, proprio come i funghi dopo la pioggia. Sono simboli di compassione, saggezza e trasformazione, e agiscono in silenzio, senza clamore, proprio come il micelio lavora sotto la superficie del suolo.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <div class="image-text-layout reverse">
+                    <div class="text-content">
+                        <h3>L'INCONTRO CON LA FOTOGRAFIA E LA METAFORA DI ADAM</h3>
+                        
+                        <p>Con il tempo, il progetto "Abusive Mushroom" si è arricchito di una nuova dimensione: la fotografia. Se l'abbandono dell'opera rappresenta il gesto di disseminazione, la fotografia diventa lo strumento di memoria e documentazione, ma anche un'ulteriore stratificazione simbolica dell'intero progetto.</p>
+                        
+                        <p>Qui entra in scena Adam, un ragazzo trans che diventa metafora vivente del fungo stesso. Così come i funghi non appartengono né al regno animale né a quello vegetale, Adam incarna una soglia, uno spazio fluido, un'identità che sfugge alle categorie binarie. Il suo corpo e la sua presenza amplificano il messaggio del fungo di Riccardi: un invito a riconoscere e accogliere la complessità, l'interconnessione e la trasformazione.</p>
+                    </div>
+                    
+                    <div class="abusive-mushroom-image-container">
+                        <img src="../assets/abusive mushroom/adam.jpeg" alt="Adam, metafora vivente del fungo" class="abusive-mushroom-image">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section-full">
+                <h3>L'ARCHIVIO E IL VIAGGIO DELL'OPERA</h3>
+                
+                <p>Insieme ad Adam, Riccardi realizza una serie di scatti fotografici in cui i quadri vengono inseriti in contesti suggestivi e inaspettati. L'opera, prima di essere abbandonata, viene immortalata in luoghi scelti con cura: margini urbani, spazi naturali, angoli di città anonimi ma pieni di storie.</p>
+            </div>
+            
+            <div class="content-section-full">
+                <h3>L'ARTE COME MUTAZIONE CONTINUA</h3>
+                
+                <p>La fotografia non è solo un modo per raccogliere tracce, ma un atto artistico autonomo che rafforza il concetto di mutazione e movimento. L'opera di Riccardi, che già di per sé sfida il concetto di possesso e staticità, trova nella fotografia un modo per espandere la sua portata.</p>
+                
+                <p>Con l'introduzione della fotografia, "Abusive Mushroom" non è più solo un gesto di abbandono e disseminazione, ma anche una pratica di documentazione poetica, un gioco tra presenza e assenza, una riflessione visiva sull'impermanenza e sulla bellezza dell'incontro.</p>
+            </div>
+            
+            <div class="visit-button-container">
+                <a href="https://abusivemushroom.com/" target="_blank" rel="noopener noreferrer" class="visit-button">
+                    Visita Abusive Mushroom
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>
+
