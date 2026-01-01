@@ -798,7 +798,7 @@
                         return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -827,7 +827,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -849,7 +849,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>
@@ -871,7 +871,7 @@
                             return `
                             <div class="artwork-item">
                                 <div class="artwork-image">
-                                    <img src="${artwork.image}" alt="${artwork.title}">
+                                    <img src="${encodeURI(artwork.image)}" alt="${artwork.title}">
                                 </div>
                                 <div class="artwork-info">
                                     <div class="artwork-title">${artwork.title}</div>

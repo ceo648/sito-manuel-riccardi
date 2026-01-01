@@ -833,6 +833,54 @@ body {
 
     .gallery-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .gallery-card {
+        margin-bottom: 20px;
+    }
+    
+    .gallery-card-image {
+        height: 200px;
+    }
+    
+    .gallery-card-content {
+        padding: 20px;
+    }
+    
+    .gallery-card-content h3 {
+        font-size: 20px;
+    }
+    
+    .gallery-card-content p {
+        font-size: 14px;
+    }
+    
+    .curtain-toggle {
+        padding: 12px 20px;
+        font-size: 14px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .curtain-content {
+        padding: 20px;
+    }
+    
+    .exhibitions-list {
+        gap: 15px;
+    }
+    
+    .exhibition-item {
+        padding: 15px;
+    }
+    
+    .exhibition-item h4 {
+        font-size: 16px;
+    }
+    
+    .exhibition-item p {
+        font-size: 14px;
     }
 
     .section-title {
